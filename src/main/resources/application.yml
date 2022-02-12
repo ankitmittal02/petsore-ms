@@ -1,0 +1,83 @@
+server:
+  port: ${PORT:8085}
+spring:
+  application:
+    name: petstore-ms
+  profiles:
+    active: dev
+  output:
+   ansi:
+     enabled: DETECT
+
+microserviceUrl:
+  petStoreMicroServiceUrl: http://petstore-demo-endpoint.execute-api.com/petstore/pets
+
+
+logging:
+  level:
+    org:
+      springframework:
+        web: debug
+      hibernate: info
+    com:
+      pets:
+        petstore: info      
+---
+server:
+  port: ${PORT:8085}
+spring:
+  profiles: dev
+  devtools:
+    restart:
+      enabled: true
+
+logging:
+  level:
+    root: OFF
+    org:
+      springframework:
+        web: error
+      hibernate: OFF
+    com:
+      pets:
+        petstore: info 
+        
+---
+spring:
+  profiles: qa
+
+logging:
+  level:
+    org:
+      springframework:
+        web: debug
+      hibernate: debug
+    com:
+      pets:
+        petstore: debug 
+---
+spring:
+  profiles: uat
+
+logging:
+  level:
+    org:
+      springframework:
+        web: warn
+      hibernate: warn
+    com:
+      pets:
+        petstore: warn 
+---
+spring:
+  profiles: prod
+
+logging:
+  level:
+    org:
+      springframework:
+        web: error
+      hibernate: error
+    com:
+      pets:
+        petstore: error 
