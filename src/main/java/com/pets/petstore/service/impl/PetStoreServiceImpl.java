@@ -33,25 +33,20 @@ public class PetStoreServiceImpl implements PetStoreService {
 
 	@Override
 	public List<PetStoreModel> getAllPets() {
+		log.info("Started getAllPets() !!");
 		ResponseEntity<PetStoreModel[]> responseEntity = restTemplate.exchange(getMSUrl(), HttpMethod.GET, null,
 				PetStoreModel[].class);
 		List<PetStoreModel> pets = Arrays.asList(responseEntity.getBody());
-
+		log.info("Finished getAllPets() !!");
 		return pets;
 	}
 
 	@Override
 	public PetStoreModel create(PetStoreModel petStoreModel) {
+		log.info("Started create() !!");
+		
+		log.info("petStoreModel :: " + petStoreModel.toString());
 
-		System.out.println("petStoreModel :: " + petStoreModel.toString());
-
-		// post using postForEntity()
-		ResponseEntity<PetStoreModel> response = restTemplate.postForEntity(getMSUrl(), petStoreModel,
-				PetStoreModel.class);
-		System.out.println("Response with postForEntity()...");
-		System.out.println(response.getBody().toString());
-		System.out.println("Response code:: " + response.getStatusCodeValue());
-		// post using postForObject()
 		PetStoreModel postResponse = null;
 		try {
 			postResponse = restTemplate.postForObject(getMSUrl(), petStoreModel, PetStoreModel.class);
@@ -61,7 +56,7 @@ public class PetStoreServiceImpl implements PetStoreService {
 		} catch (Exception ex) {
 			log.error(" Exception occured!!");
 		}
-
+		log.info("Finished create() !!");
 		return postResponse;
 	}
 
@@ -71,24 +66,27 @@ public class PetStoreServiceImpl implements PetStoreService {
 
 	@Override
 	public PetStoreModel getPetsById(Integer id) {
-
+		log.info("Started getPetsById() !!");
 		String url = getMSUrl().concat("/" + id);
 		log.info(" url for get by Id ::" + url);
 		ResponseEntity<PetStoreModel> responseEntity = restTemplate.exchange(url, HttpMethod.GET, null,
 				PetStoreModel.class);
 
 		log.info("responseEntity ::" + responseEntity.getBody().toString());
+		log.info("Finished getPetsById() !!");
 		return responseEntity.getBody();
 	}
 
 	@Override
 	public void deletePet(Integer id) {
+		log.info("Started deletePet() !!");
 		Map<String, Integer> params = new HashMap<String, Integer>();
 		params.put("id", id);
 		String url = getMSUrl().concat("/" + id);
 		log.info(" url for get by Id ::" + url);
 		RestTemplate restTemplate = new RestTemplate();
 		restTemplate.delete(url);
+		log.info("Finished deletePet() !!");
 	}
 
 }
